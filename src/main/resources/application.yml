@@ -1,0 +1,17 @@
+# SPRING BOOT REFERENCE DOCUMENTATION
+# https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html
+
+spring:
+  r2dbc:
+    url: URL_HERE
+    username: USERNAME_HERE
+    password: PASSWORD_HERE
+logging:
+  level:
+    org:
+      springframework:
+        data:
+          r2dbc: DEBUG
+server:
+    error:
+      include-stacktrace: on_param
