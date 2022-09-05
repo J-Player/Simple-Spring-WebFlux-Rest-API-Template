@@ -3,9 +3,9 @@
 
 spring:
   r2dbc:
-    url: URL_HERE
-    username: USERNAME_HERE
-    password: PASSWORD_HERE
+    url: # URL_HERE
+    username: # USERNAME_HERE
+    password: # PASSWORD_HERE
 springdoc:
   webjars:
     prefix:
