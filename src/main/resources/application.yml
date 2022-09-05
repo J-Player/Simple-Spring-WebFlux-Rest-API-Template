@@ -1,4 +1,4 @@
-# SPRING BOOT REFERENCE DOCUMENTATION
+# Spring Boot - Common Server Properties
 # https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html
 
 spring:
@@ -6,6 +6,10 @@ spring:
     url: URL_HERE
     username: USERNAME_HERE
     password: PASSWORD_HERE
+springdoc:
+  webjars:
+    prefix:
+      logging: ""
 logging:
   level:
     org:
