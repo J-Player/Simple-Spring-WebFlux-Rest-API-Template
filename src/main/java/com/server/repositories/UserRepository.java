@@ -1,6 +1,6 @@
-package com.server.repository;
+package com.server.repositories;
 
-import com.server.domain.User;
+import com.server.domains.User;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import reactor.core.publisher.Mono;
 

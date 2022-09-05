@@ -1,18 +1,18 @@
-package com.server.controller;
+package com.server.services;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface AbstractController<T, Id> {
+public interface AbstractService<T, Id> {
 
     Mono<T> findById(Id id);
-
-    Flux<T> findAll();
 
     Mono<T> save(T t);
 
     Mono<Void> update(T t);
 
-    Mono<Void> delete(T t);
+    Mono<Void> delete(Id id);
+
+    Flux<T> findAll();
 
 }

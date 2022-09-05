@@ -1,10 +1,8 @@
-package com.server.domain;
+package com.server.domains;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,10 +14,11 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 @Data
+@With
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table
+@Table("User")
 public class User implements UserDetails {
 
     @Id
@@ -29,12 +28,17 @@ public class User implements UserDetails {
     @NotEmpty
     private String password;
     private String authorities; //Ex.: "ROLE_ADMIN,ROLE_USER"
-    @NotEmpty
-    private String name;
-
+    @Builder.Default
+    @Column("isAccountNonExpired")
     private boolean isAccountNonExpired = true;
+    @Builder.Default
+    @Column("isAccountNonLocked")
     private boolean isAccountNonLocked = true;
+    @Builder.Default
+    @Column("isCredentialsNonExpired")
     private boolean isCredentialsNonExpired = true;
+    @Builder.Default
+    @Column("isEnabled")
     private boolean isEnabled = true;
 
     @Override
@@ -63,4 +67,5 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return this.isEnabled;
     }
+
 }
