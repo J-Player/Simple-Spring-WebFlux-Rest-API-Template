@@ -13,6 +13,7 @@ public class Client {
 
     @NotEmpty
     private final String username = "";
+
     @NotEmpty
     private final String password = "";
 

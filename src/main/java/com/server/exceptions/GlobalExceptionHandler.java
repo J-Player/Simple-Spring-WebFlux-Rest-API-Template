@@ -1,6 +1,6 @@
-package com.server.exception;
+package com.server.exceptions;
 
-import com.server.domain.WebResources;
+import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.reactive.error.ErrorAttributes;
@@ -23,13 +23,14 @@ import static org.springframework.boot.web.error.ErrorAttributeOptions.*;
 public class GlobalExceptionHandler extends AbstractErrorWebExceptionHandler {
 
     public GlobalExceptionHandler(ErrorAttributes errorAttributes,
-                                  WebResources webResources,
+                                  WebProperties.Resources resources,
                                   ApplicationContext applicationContext,
                                   ServerCodecConfigurer codecConfigurer) {
-        super(errorAttributes, webResources, applicationContext);
+        super(errorAttributes, resources, applicationContext);
         this.setMessageWriters(codecConfigurer.getWriters());
     }
 
+    @Override
     protected RouterFunction<ServerResponse> getRoutingFunction(ErrorAttributes errorAttributes) {
         return RouterFunctions.route(RequestPredicates.all(), this::formatErrorResponse);
     }

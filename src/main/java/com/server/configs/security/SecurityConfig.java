@@ -1,6 +1,6 @@
-package com.server.config;
+package com.server.configs.security;
 
-import com.server.service.UserDetailsService;
+import com.server.services.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
@@ -8,6 +8,8 @@ import org.springframework.security.authentication.UserDetailsRepositoryReactive
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 
 @EnableWebFluxSecurity
@@ -23,7 +25,7 @@ public class SecurityConfig {
             "/users/**"
     };
 
-    private static final String[] SWAGGER = {
+    private static final String[] PATHS_SWAGGER = {
             "/swagger-ui.html",
             "/swagger-ui/**",
             "/v3/com.api-docs/**",
@@ -31,7 +33,7 @@ public class SecurityConfig {
     };
 
     @Bean
-    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity httpSecurity) {
+    protected SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity httpSecurity) {
         //@formatter:off
         return httpSecurity
                 .csrf().disable()
@@ -41,7 +43,7 @@ public class SecurityConfig {
                     .pathMatchers(HttpMethod.DELETE).hasRole(ADMIN)
                     .pathMatchers(HttpMethod.POST).hasRole(ADMIN)
                     .pathMatchers(HttpMethod.PUT).hasRole(ADMIN)
-                .pathMatchers(SWAGGER).authenticated()
+                .pathMatchers(PATHS_SWAGGER).authenticated()
                 .and()
                     .formLogin()
                 .and()
@@ -52,8 +54,13 @@ public class SecurityConfig {
     }
 
     @Bean
-    ReactiveAuthenticationManager authenticationManager(UserDetailsService userDetailsService) {
-        return new UserDetailsRepositoryReactiveAuthenticationManager(userDetailsService);
+    protected ReactiveAuthenticationManager authenticationManager(UserService userService) {
+        return new UserDetailsRepositoryReactiveAuthenticationManager(userService);
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
 }
