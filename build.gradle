@@ -9,7 +9,6 @@ repositories {
 }
 
 dependencies {
-    implementation 'io.projectreactor.tools:blockhound:1.0.6.RELEASE' //BLOCKHOUND
     implementation 'org.springframework.boot:spring-boot-starter-webflux' //SPRING WEBFLUX
     implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc' //SPRING R2DBC
     implementation 'org.springframework.boot:spring-boot-starter-validation' //SPRING VALIDATION
@@ -20,6 +19,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.24' //LOMBOK
     testImplementation 'org.springframework.boot:spring-boot-starter-test' //SPRING TEST
     testImplementation 'io.projectreactor:reactor-test:3.4.22' //REACTOR
+    testImplementation 'io.projectreactor.tools:blockhound:1.0.6.RELEASE' //BLOCKHOUND
 }
 
 java {
