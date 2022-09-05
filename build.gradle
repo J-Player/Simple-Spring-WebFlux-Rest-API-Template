@@ -1,37 +1,25 @@
 plugins {
-    // Apply the application plugin to add support for building a CLI application in Java.
-    id 'application'
-    id 'java-library'
+    id 'org.springframework.boot' version '2.7.3'
+    id 'io.spring.dependency-management' version '1.0.13.RELEASE'
+    id 'java'
 }
 
 repositories {
-    // Use Maven Central for resolving dependencies.
     mavenCentral()
 }
 
 dependencies {
-    implementation 'com.google.guava:guava:31.0.1-jre'
-
     implementation 'io.projectreactor.tools:blockhound:1.0.6.RELEASE' //BLOCKHOUND
-
-    implementation 'org.springframework.boot:spring-boot-starter-webflux:2.6.1' //SPRING WEBFLUX
-    implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc:2.6.1' //SPRING R2DBC
-    implementation 'org.springframework.boot:spring-boot-starter-validation:2.6.1' //SPRING VALIDATION
-    implementation 'org.springframework.boot:spring-boot-starter-security:2.6.1' //SPRING SECURITY
-    implementation 'org.springframework.boot:spring-boot-devtools:2.6.1' //SPRING DEV-TOOLS
-    implementation 'org.springdoc:springdoc-openapi-webflux-ui:1.5.12' //SPRINGDOC OPENAPI WEBFLUX
-    implementation 'io.projectreactor.netty:reactor-netty:1.0.13' //NETTY
-    implementation 'org.projectlombok:lombok:1.18.22' //LOMBOK
-    annotationProcessor 'org.projectlombok:lombok:1.18.22' //LOMBOK
-
-    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.1' //SPRING TEST
-    testImplementation 'io.projectreactor:reactor-test:3.4.12' //REACTOR
-
-}
-
-application {
-    // Define the main class for the application.
-    mainClass = 'src.main.java.Application'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux' //SPRING WEBFLUX
+    implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc' //SPRING R2DBC
+    implementation 'org.springframework.boot:spring-boot-starter-validation' //SPRING VALIDATION
+    implementation 'org.springframework.boot:spring-boot-starter-security' //SPRING SECURITY
+    implementation 'org.springframework.boot:spring-boot-devtools' //SPRING DEV-TOOLS
+    implementation 'org.springdoc:springdoc-openapi-webflux-ui:1.6.11' //SPRINGDOC OPENAPI WEBFLUX
+    implementation 'org.projectlombok:lombok:1.18.24' //LOMBOK
+    annotationProcessor 'org.projectlombok:lombok:1.18.24' //LOMBOK
+    testImplementation 'org.springframework.boot:spring-boot-starter-test' //SPRING TEST
+    testImplementation 'io.projectreactor:reactor-test:3.4.22' //REACTOR
 }
 
 java {
@@ -41,6 +29,5 @@ java {
 }
 
 tasks.named('test') {
-    // Use JUnit Platform for unit tests.
     useJUnitPlatform()
 }
