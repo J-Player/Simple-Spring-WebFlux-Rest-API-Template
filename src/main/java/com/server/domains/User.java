@@ -48,24 +48,4 @@ public class User implements UserDetails {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return this.isAccountNonExpired;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return this.isAccountNonLocked;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return this.isCredentialsNonExpired;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return this.isEnabled;
-    }
-
 }
