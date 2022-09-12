@@ -4,6 +4,10 @@ plugins {
     id 'java'
 }
 
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
 repositories {
     mavenCentral()
 }
@@ -20,12 +24,6 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test' //SPRING TEST
     testImplementation 'io.projectreactor:reactor-test:3.4.22' //REACTOR
     testImplementation 'io.projectreactor.tools:blockhound:1.0.6.RELEASE' //BLOCKHOUND
-}
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(11)
-    }
 }
 
 tasks.named('test') {
