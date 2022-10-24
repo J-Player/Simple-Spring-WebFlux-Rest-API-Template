@@ -1,7 +1,7 @@
 package com.example.server.configs.data;
 
-import com.example.server.repositories.UserRepository;
 import com.example.server.domains.User;
+import com.example.server.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
