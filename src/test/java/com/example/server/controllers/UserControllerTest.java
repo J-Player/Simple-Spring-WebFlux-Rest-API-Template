@@ -44,7 +44,7 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("findByUsername | Retorna um User quando bem-sucedido")
+    @DisplayName("findById | Retorna um User quando bem-sucedido")
     void findById() {
         StepVerifier.create(userController.findById(1))
                 .expectSubscription()
