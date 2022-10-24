@@ -12,18 +12,18 @@ import javax.validation.constraints.NotEmpty;
 public class Client {
 
     @NotEmpty
-    private final String username = "";
+    private static final String USERNAME = "";
 
     @NotEmpty
-    private final String password = "";
+    private static final String PASSWORD = "";
 
     @Bean
     private WebClient webClient(WebClient.Builder builder) {
         return builder
-                .baseUrl("http://localhost:8081")
+                .baseUrl("http://localhost:8080")
                 .defaultHeaders(headers -> {
                     headers.setContentType(MediaType.APPLICATION_JSON);
-                    headers.setBasicAuth(username, password);
+                    headers.setBasicAuth(USERNAME, PASSWORD);
                 })
                 .build();
     }
