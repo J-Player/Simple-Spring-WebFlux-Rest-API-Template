@@ -1,12 +1,18 @@
 plugins {
     id 'org.springframework.boot' version '2.7.3'
-    id 'io.spring.dependency-management' version '1.0.13.RELEASE'
+    id 'io.spring.dependency-management' version '1.1.0'
     id 'java-library'
 }
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+sourceCompatibility = 11
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
 
 repositories {
     mavenCentral()
@@ -17,11 +23,14 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc' //SPRING R2DBC
     implementation 'org.springframework.boot:spring-boot-starter-validation' //SPRING VALIDATION
     implementation 'org.springframework.boot:spring-boot-starter-security' //SPRING SECURITY
-    implementation 'org.springframework.boot:spring-boot-devtools' //SPRING DEV-TOOLS
+    developmentOnly 'org.springframework.boot:spring-boot-devtools' //SPRING DEV-TOOLS
     implementation 'org.springdoc:springdoc-openapi-webflux-ui:1.6.11' //SPRINGDOC OPENAPI WEBFLUX
-    implementation 'org.projectlombok:lombok:1.18.24' //LOMBOK
+    compileOnly 'org.projectlombok:lombok:1.18.24' //LOMBOK
     annotationProcessor 'org.projectlombok:lombok:1.18.24' //LOMBOK
+    implementation 'org.mapstruct:mapstruct:1.5.3.Final' //MAPSTRUCT
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final' //MAPSTRUCT
     testImplementation 'org.springframework.boot:spring-boot-starter-test' //SPRING TEST
+    testImplementation 'org.springframework.security:spring-security-test' //SPRING SECURITY TEST
     testImplementation 'io.projectreactor:reactor-test:3.4.22' //REACTOR
     testImplementation 'io.projectreactor.tools:blockhound:1.0.6.RELEASE' //BLOCKHOUND
 }
