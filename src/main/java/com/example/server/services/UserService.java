@@ -15,10 +15,12 @@ import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 @RequiredArgsConstructor
 @Slf4j
 @Service
-public class UserService implements AbstractService<User, Integer>, ReactiveUserDetailsService {
+public class UserService implements AbstractService<User, UUID>, ReactiveUserDetailsService {
 
     private final UserRepository userRepository;
 
@@ -26,7 +28,7 @@ public class UserService implements AbstractService<User, Integer>, ReactiveUser
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public Mono<User> findById(Integer id) {
+    public Mono<User> findById(UUID id) {
         return userRepository.findById(id)
                 .switchIfEmpty(monoResponseStatusNotFoundException());
     }
@@ -58,12 +60,18 @@ public class UserService implements AbstractService<User, Integer>, ReactiveUser
     @Override
     public Mono<Void> update(User user) {
         return findById(user.getId())
+                .map(userSaved -> {
+                    String userSavedPassword = userSaved.getPassword();
+                    boolean matches = passwordEncoder.matches(user.getPassword(), userSavedPassword);
+                    if (!matches) user.withPassword(passwordEncoder.encode(user.getPassword()));
+                    return user;
+                })
                 .flatMap(userRepository::save)
                 .then();
     }
 
     @Override
-    public Mono<Void> delete(Integer id) {
+    public Mono<Void> delete(UUID id) {
         return findById(id)
                 .flatMap(userRepository::delete)
                 .then();

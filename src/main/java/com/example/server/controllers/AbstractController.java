@@ -3,15 +3,15 @@ package com.example.server.controllers;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface AbstractController<T, Id> {
+public interface AbstractController<T, DTO, Id> {
 
     Mono<T> findById(Id id);
 
     Flux<T> findAll();
 
-    Mono<T> save(T t);
+    Mono<T> save(DTO dto);
 
-    Mono<Void> update(Id id, T t);
+    Mono<Void> update(DTO dto, Id id);
 
     Mono<Void> delete(Id id);
 
