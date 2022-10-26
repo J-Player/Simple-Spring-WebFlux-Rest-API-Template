@@ -19,10 +19,13 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
+import java.util.UUID;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 
-import static org.mockito.ArgumentMatchers.*;
+import static java.util.UUID.randomUUID;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 
 @ExtendWith(SpringExtension.class)
 @DisplayName("User Service Test Class")
@@ -37,7 +40,7 @@ class UserServiceTest {
     @Mock
     private PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
-    private final User user = UserCreator.createValidUser();
+    private final User user = UserCreator.createUser();
 
     @BeforeAll
     public static void blockHound() {
@@ -61,15 +64,15 @@ class UserServiceTest {
 
     @BeforeEach
     void setUp() {
-        BDDMockito.when(userRepository.findById(anyInt()))
+        BDDMockito.when(userRepository.findById(any(UUID.class)))
                 .thenReturn(Mono.just(user));
         BDDMockito.when(userRepository.findByUsername(anyString()))
                 .thenReturn(Mono.just(user));
         BDDMockito.when(userRepository.findAll())
                 .thenReturn(Flux.just(user));
-        BDDMockito.when(userRepository.save(UserCreator.createToSaved()))
+        BDDMockito.when(userRepository.save(user))
                 .thenReturn(Mono.just(user));
-        BDDMockito.when(userRepository.save(UserCreator.createValidUser()))
+        BDDMockito.when(userRepository.save(UserCreator.createUser()))
                 .thenReturn(Mono.empty());
         BDDMockito.when(userRepository.delete(any(User.class)))
                 .thenReturn(Mono.empty());
@@ -78,7 +81,7 @@ class UserServiceTest {
     @Test
     @DisplayName("findById | Retorna um User quando bem-sucedido")
     void findById() {
-        StepVerifier.create(userService.findById(1))
+        StepVerifier.create(userService.findById(randomUUID()))
                 .expectSubscription()
                 .expectNext(user)
                 .expectComplete();
@@ -87,9 +90,9 @@ class UserServiceTest {
     @Test
     @DisplayName("findByUsername | Retorna um Mono Error quando o User nao existir")
     void findById_UserNotFound() {
-        BDDMockito.when(userRepository.findById(anyInt()))
+        BDDMockito.when(userRepository.findById(any(UUID.class)))
                 .thenReturn(Mono.empty());
-        StepVerifier.create(userService.findById(1))
+        StepVerifier.create(userService.findById(randomUUID()))
                 .expectSubscription()
                 .expectError(ResponseStatusException.class)
                 .verify();
@@ -127,7 +130,7 @@ class UserServiceTest {
     @Test
     @DisplayName("save | Salva um User no banco de dados quando bem-sucedido")
     void save() {
-        StepVerifier.create(userService.save(UserCreator.createToSaved()))
+        StepVerifier.create(userService.save(user))
                 .expectSubscription()
                 .expectNext(user)
                 .expectComplete();
@@ -136,7 +139,7 @@ class UserServiceTest {
     @Test
     @DisplayName("update | Atualiza um User no banco de dados quando bem-sucedido")
     void update() {
-        StepVerifier.create(userService.update(UserCreator.createValidUser()))
+        StepVerifier.create(userService.update(UserCreator.createUser()))
                 .expectSubscription()
                 .expectComplete();
     }
@@ -144,9 +147,9 @@ class UserServiceTest {
     @Test
     @DisplayName("update | Retorna um Mono Error quando o User nao existir")
     void update_UserNotFound() {
-        BDDMockito.when(userRepository.findById(anyInt()))
+        BDDMockito.when(userRepository.findById(any(UUID.class)))
                         .thenReturn(Mono.empty());
-        StepVerifier.create(userService.update(UserCreator.createValidUser()))
+        StepVerifier.create(userService.update(UserCreator.createUser()))
                 .expectSubscription()
                 .expectError(ResponseStatusException.class)
                 .verify();
@@ -155,7 +158,7 @@ class UserServiceTest {
     @Test
     @DisplayName("delete | Exclui um User do banco de dados quando bem-sucedido")
     void delete() {
-        StepVerifier.create(userService.delete(1))
+        StepVerifier.create(userService.delete(randomUUID()))
                 .expectSubscription()
                 .expectComplete();
     }
@@ -163,9 +166,9 @@ class UserServiceTest {
     @Test
     @DisplayName("delete | Retorna um Mono Error quando o User nao existir")
     void delete_UserNotFound() {
-        BDDMockito.when(userRepository.findById(anyInt()))
+        BDDMockito.when(userRepository.findById(any(UUID.class)))
                 .thenReturn(Mono.empty());
-        StepVerifier.create(userService.delete(1))
+        StepVerifier.create(userService.delete(randomUUID()))
                 .expectSubscription()
                 .expectError(ResponseStatusException.class)
                 .verify();
