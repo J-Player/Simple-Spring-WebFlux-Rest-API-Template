@@ -1,22 +1,21 @@
-package com.example.server.controllers;
+package com.example.api.controllers.impl;
 
-import com.example.server.domains.User;
-import com.example.server.domains.dtos.UserDTO;
-import com.example.server.mappers.UserMapper;
-import com.example.server.services.UserService;
+import com.example.api.controllers.IController;
+import com.example.api.domains.User;
+import com.example.api.domains.dtos.UserDTO;
+import com.example.api.mappers.UserMapper;
+import com.example.api.services.impl.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import javax.validation.Valid;
-import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
@@ -24,7 +23,7 @@ import java.util.UUID;
 @Tag(name = "User")
 @SecurityScheme(name = "Basic Authentication", type = SecuritySchemeType.HTTP, scheme = "basic")
 @SecurityRequirement(name = "Basic Authentication")
-public class UserController implements AbstractController<User, UserDTO, UUID> {
+public class UserController implements IController<User, UserDTO> {
 
     private final UserService userService;
 
@@ -32,7 +31,7 @@ public class UserController implements AbstractController<User, UserDTO, UUID> {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Returns a user by ID.")
-    public Mono<User> findById(@PathVariable UUID id) {
+    public Mono<User> findById(@PathVariable Long id) {
         return userService.findById(id);
     }
 
@@ -63,7 +62,7 @@ public class UserController implements AbstractController<User, UserDTO, UUID> {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Updates a user in the database.")
-    public Mono<Void> update(@RequestBody @Valid UserDTO userDTO, @PathVariable UUID id) {
+    public Mono<Void> update(@RequestBody @Valid UserDTO userDTO, @PathVariable Long id) {
         return userService.update(UserMapper.INSTANCE.toUser(userDTO).withId(id));
     }
 
@@ -71,7 +70,7 @@ public class UserController implements AbstractController<User, UserDTO, UUID> {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Deletes a user in the database.")
-    public Mono<Void> delete(@PathVariable UUID id) {
+    public Mono<Void> delete(@PathVariable Long id) {
         return userService.delete(id);
     }
 
