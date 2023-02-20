@@ -1,6 +1,9 @@
-package com.example.server.domains;
+package com.example.api.domains;
 
-import lombok.*;
+import jakarta.validation.constraints.NotEmpty;
+import lombok.Builder;
+import lombok.Data;
+import lombok.With;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
@@ -8,22 +11,18 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.validation.constraints.NotEmpty;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Data
 @With
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
 @Table("User")
 public class User implements UserDetails {
 
     @Id
-    private UUID id;
+    private Long id;
     @NotEmpty
     private String username;
     @NotEmpty
@@ -31,17 +30,17 @@ public class User implements UserDetails {
     @Builder.Default
     private String authorities = "ROLE_USER"; //Ex.: "ROLE_ADMIN,ROLE_USER"
     @Builder.Default
-    @Column("isAccountNonExpired")
-    private boolean isAccountNonExpired = true;
+    @Column("accountNonExpired")
+    private boolean accountNonExpired = true;
     @Builder.Default
-    @Column("isAccountNonLocked")
-    private boolean isAccountNonLocked = true;
+    @Column("accountNonLocked")
+    private boolean accountNonLocked = true;
     @Builder.Default
-    @Column("isCredentialsNonExpired")
-    private boolean isCredentialsNonExpired = true;
+    @Column("credentialsNonExpired")
+    private boolean credentialsNonExpired = true;
     @Builder.Default
-    @Column("isEnabled")
-    private boolean isEnabled = true;
+    @Column("enabled")
+    private boolean enabled = true;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
