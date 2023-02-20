@@ -1,6 +1,6 @@
-package com.example.server.configs.security;
+package com.example.api.configs.security;
 
-import com.example.server.services.UserService;
+import com.example.api.services.impl.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;

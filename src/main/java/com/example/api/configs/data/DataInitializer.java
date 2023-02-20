@@ -1,13 +1,11 @@
-package com.example.server.configs.data;
+package com.example.api.configs.data;
 
-import com.example.server.domains.User;
-import com.example.server.repositories.UserRepository;
+import com.example.api.domains.User;
+import com.example.api.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -19,9 +17,6 @@ public class DataInitializer implements ApplicationRunner {
 
     private final UserRepository userRepository;
 
-    @Autowired
-    private final PasswordEncoder passwordEncoder;
-
     @Override
     public void run(ApplicationArguments args) {
         userRepository.deleteAll()
@@ -29,14 +24,14 @@ public class DataInitializer implements ApplicationRunner {
                                 User.builder()
                                         .username("admin")
                                         .authorities("ROLE_ADMIN,ROLE_USER")
-                                        .password(passwordEncoder.encode("admin"))
+                                        .password("admin")
                                         .build(),
                                 User.builder()
                                         .username("user")
                                         .authorities("ROLE_USER")
-                                        .password(passwordEncoder.encode("user"))
+                                        .password("user")
                                         .build()))
-                        .thenMany(userRepository.findAll()));
+                        .doOnNext(user -> log.info("User: {}", user)));
     }
 
 }
