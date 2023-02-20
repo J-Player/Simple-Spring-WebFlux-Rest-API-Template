@@ -1,18 +1,13 @@
 plugins {
-    id 'org.springframework.boot' version '2.7.3'
+    id 'org.springframework.boot' version '3.0.2'
     id 'io.spring.dependency-management' version '1.1.0'
-    id 'java-library'
+    id 'java'
 }
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = 11
-
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
-    }
-}
+sourceCompatibility = 17
+targetCompatibility = 17
 
 repositories {
     mavenCentral()
@@ -21,7 +16,6 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-webflux' //SPRING WEBFLUX
     implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc' //SPRING R2DBC
-    implementation 'org.springframework.boot:spring-boot-starter-validation' //SPRING VALIDATION
     implementation 'org.springframework.boot:spring-boot-starter-security' //SPRING SECURITY
     developmentOnly 'org.springframework.boot:spring-boot-devtools' //SPRING DEV-TOOLS
     implementation 'org.springdoc:springdoc-openapi-webflux-ui:1.6.11' //SPRINGDOC OPENAPI WEBFLUX
