@@ -1,7 +1,8 @@
-package com.example.server.services;
+package com.example.api.services.impl;
 
-import com.example.server.domains.User;
-import com.example.server.repositories.UserRepository;
+import com.example.api.domains.User;
+import com.example.api.repositories.UserRepository;
+import com.example.api.services.IService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +16,10 @@ import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.UUID;
-
 @RequiredArgsConstructor
 @Slf4j
 @Service
-public class UserService implements AbstractService<User, UUID>, ReactiveUserDetailsService {
+public class UserService implements IService<User, Long>, ReactiveUserDetailsService {
 
     private final UserRepository userRepository;
 
@@ -28,7 +27,7 @@ public class UserService implements AbstractService<User, UUID>, ReactiveUserDet
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public Mono<User> findById(UUID id) {
+    public Mono<User> findById(Long id) {
         return userRepository.findById(id)
                 .switchIfEmpty(monoResponseStatusNotFoundException());
     }
@@ -71,7 +70,7 @@ public class UserService implements AbstractService<User, UUID>, ReactiveUserDet
     }
 
     @Override
-    public Mono<Void> delete(UUID id) {
+    public Mono<Void> delete(Long id) {
         return findById(id)
                 .flatMap(userRepository::delete)
                 .then();
