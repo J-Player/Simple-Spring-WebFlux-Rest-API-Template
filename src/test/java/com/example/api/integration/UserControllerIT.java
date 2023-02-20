@@ -1,10 +1,10 @@
-package com.example.server.integration;
+package com.example.api.integration;
 
-import com.example.server.domains.User;
-import com.example.server.domains.dtos.UserDTO;
-import com.example.server.repositories.UserRepository;
-import com.example.server.services.UserService;
-import com.example.server.utils.UserCreator;
+import com.example.api.domains.User;
+import com.example.api.domains.dtos.UserDTO;
+import com.example.api.repositories.UserRepository;
+import com.example.api.services.impl.UserService;
+import com.example.api.utils.UserCreator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,15 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.UUID;
-
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
@@ -45,8 +43,8 @@ class UserControllerIT {
 
     @BeforeEach
     void setUp() {
-        BDDMockito.when(userRepository.findById(any(UUID.class))).thenReturn(Mono.just(user));
-        BDDMockito.when(userRepository.findAll(any(Sort.class))).thenReturn(Flux.just(user));
+        BDDMockito.when(userRepository.findById(anyLong())).thenReturn(Mono.just(user));
+        BDDMockito.when(userRepository.findAll()).thenReturn(Flux.just(user));
         BDDMockito.when(userRepository.save(any(User.class))).thenReturn(Mono.just(user));
         BDDMockito.when(userRepository.delete(any(User.class))).thenReturn(Mono.empty());
     }

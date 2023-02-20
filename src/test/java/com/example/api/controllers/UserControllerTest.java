@@ -1,9 +1,10 @@
-package com.example.server.controllers;
+package com.example.api.controllers;
 
-import com.example.server.domains.User;
-import com.example.server.domains.dtos.UserDTO;
-import com.example.server.services.UserService;
-import com.example.server.utils.UserCreator;
+import com.example.api.controllers.impl.UserController;
+import com.example.api.domains.User;
+import com.example.api.domains.dtos.UserDTO;
+import com.example.api.services.impl.UserService;
+import com.example.api.utils.UserCreator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,10 +17,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.util.UUID;
-
-import static java.util.UUID.randomUUID;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 
 @ExtendWith(SpringExtension.class)
 @DisplayName("User Controller Test Class")
@@ -36,7 +35,7 @@ class UserControllerTest {
 
     @BeforeEach
     void setUp() {
-        BDDMockito.when(userService.findById(any(UUID.class)))
+        BDDMockito.when(userService.findById(anyLong()))
                 .thenReturn(Mono.just(user));
         BDDMockito.when(userService.findAll())
                 .thenReturn(Flux.just(user));
@@ -44,14 +43,14 @@ class UserControllerTest {
                 .thenReturn(Mono.just(user));
         BDDMockito.when(userService.save(any(User.class)))
                 .thenReturn(Mono.empty());
-        BDDMockito.when(userService.delete(any(UUID.class)))
+        BDDMockito.when(userService.delete(anyLong()))
                 .thenReturn(Mono.empty());
     }
 
     @Test
     @DisplayName("findById | Retorna um User quando bem-sucedido")
     void findById() {
-        StepVerifier.create(userController.findById(randomUUID()))
+        StepVerifier.create(userController.findById(user.getId()))
                 .expectSubscription()
                 .expectNext(user)
                 .expectComplete();
@@ -69,7 +68,7 @@ class UserControllerTest {
     @Test
     @DisplayName("save | Salva um User no banco de dados quando bem-sucedido")
     void save() {
-        StepVerifier.create(userController.save(UserCreator.createUserDTO()))
+        StepVerifier.create(userController.save(userDTO))
                 .expectSubscription()
                 .expectNext(user)
                 .expectComplete();
@@ -78,7 +77,7 @@ class UserControllerTest {
     @Test
     @DisplayName("update | Atualiza um User no banco de dados quando bem-sucedido")
     void update() {
-        StepVerifier.create(userController.update(userDTO, randomUUID()))
+        StepVerifier.create(userController.update(userDTO, user.getId()))
                 .expectSubscription()
                 .expectComplete();
     }
@@ -86,7 +85,7 @@ class UserControllerTest {
     @Test
     @DisplayName("delete | Exclui um User do banco de dados quando bem-sucedido")
     void delete() {
-        StepVerifier.create(userController.delete(randomUUID()))
+        StepVerifier.create(userController.delete(user.getId()))
                 .expectSubscription()
                 .expectComplete();
     }
