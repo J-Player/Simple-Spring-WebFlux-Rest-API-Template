@@ -7,9 +7,9 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
-public abstract class UserMapper {
+public interface UserMapper {
 
-    public static final UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
+    UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "username", source = "dto.username")
@@ -19,6 +19,6 @@ public abstract class UserMapper {
     @Mapping(target = "accountNonLocked", source = "dto.accountNonLocked")
     @Mapping(target = "credentialsNonExpired", source = "dto.credentialsNonExpired")
     @Mapping(target = "enabled", source = "dto.enabled")
-    public abstract User toUser(UserDTO dto);
+    User toUser(UserDTO dto);
 
 }
