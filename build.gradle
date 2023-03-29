@@ -18,15 +18,15 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc' //SPRING R2DBC
     implementation 'org.springframework.boot:spring-boot-starter-security' //SPRING SECURITY
     developmentOnly 'org.springframework.boot:spring-boot-devtools' //SPRING DEV-TOOLS
-    implementation 'org.springdoc:springdoc-openapi-webflux-ui:1.6.11' //SPRINGDOC OPENAPI WEBFLUX
-    compileOnly 'org.projectlombok:lombok:1.18.24' //LOMBOK
-    annotationProcessor 'org.projectlombok:lombok:1.18.24' //LOMBOK
+    implementation 'org.springdoc:springdoc-openapi-webflux-ui:1.6.15' //SPRINGDOC OPENAPI WEBFLUX
+    compileOnly 'org.projectlombok:lombok:1.18.26' //LOMBOK
+    annotationProcessor 'org.projectlombok:lombok:1.18.26' //LOMBOK
     implementation 'org.mapstruct:mapstruct:1.5.3.Final' //MAPSTRUCT
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final' //MAPSTRUCT
     testImplementation 'org.springframework.boot:spring-boot-starter-test' //SPRING TEST
     testImplementation 'org.springframework.security:spring-security-test' //SPRING SECURITY TEST
-    testImplementation 'io.projectreactor:reactor-test:3.4.22' //REACTOR
-    testImplementation 'io.projectreactor.tools:blockhound:1.0.6.RELEASE' //BLOCKHOUND
+    testImplementation 'io.projectreactor:reactor-test:3.5.4' //REACTOR
+    testImplementation 'io.projectreactor.tools:blockhound:1.0.7.RELEASE' //BLOCKHOUND
 }
 
 test {
