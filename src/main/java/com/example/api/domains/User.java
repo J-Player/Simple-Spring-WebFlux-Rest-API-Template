@@ -1,9 +1,7 @@
 package com.example.api.domains;
 
 import jakarta.validation.constraints.NotEmpty;
-import lombok.Builder;
-import lombok.Data;
-import lombok.With;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
@@ -18,6 +16,8 @@ import java.util.stream.Collectors;
 @Data
 @With
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table("User")
 public class User implements UserDetails {
 

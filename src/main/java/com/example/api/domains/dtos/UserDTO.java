@@ -1,11 +1,13 @@
 package com.example.api.domains.dtos;
 
 import jakarta.validation.constraints.NotEmpty;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 @Data
+@With
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserDTO {
 
     @NotEmpty
