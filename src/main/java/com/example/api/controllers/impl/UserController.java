@@ -3,7 +3,6 @@ package com.example.api.controllers.impl;
 import com.example.api.controllers.IController;
 import com.example.api.domains.User;
 import com.example.api.domains.dtos.UserDTO;
-import com.example.api.mappers.UserMapper;
 import com.example.api.services.impl.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
@@ -55,7 +54,7 @@ public class UserController implements IController<User, UserDTO> {
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Saves a user in the database.")
     public Mono<User> save(@RequestBody @Valid UserDTO userDTO) {
-        return userService.save(UserMapper.INSTANCE.toUser(userDTO));
+        return userService.save(userDTO);
     }
 
     @Override
@@ -63,7 +62,7 @@ public class UserController implements IController<User, UserDTO> {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Updates a user in the database.")
     public Mono<Void> update(@RequestBody @Valid UserDTO userDTO, @PathVariable Long id) {
-        return userService.update(UserMapper.INSTANCE.toUser(userDTO).withId(id));
+        return userService.update(userDTO, id);
     }
 
     @Override
