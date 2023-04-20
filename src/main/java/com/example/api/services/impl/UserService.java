@@ -1,8 +1,10 @@
 package com.example.api.services.impl;
 
 import com.example.api.domains.User;
+import com.example.api.domains.dtos.UserDTO;
 import com.example.api.repositories.UserRepository;
 import com.example.api.services.IService;
+import com.example.api.utils.MapperUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +18,10 @@ import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-@RequiredArgsConstructor
 @Slf4j
 @Service
-public class UserService implements IService<User, Long>, ReactiveUserDetailsService {
+@RequiredArgsConstructor
+public class UserService implements IService<User, UserDTO>, ReactiveUserDetailsService {
 
     private final UserRepository userRepository;
 
@@ -50,26 +52,23 @@ public class UserService implements IService<User, Long>, ReactiveUserDetailsSer
 
     @Override
     @Transactional
-    public Mono<User> save(User user) {
-        String password = user.getPassword();
-        String encode = passwordEncoder.encode(password);
-        return userRepository.save(user.withPassword(encode));
+    public Mono<User> save(UserDTO userDTO) {
+        return Mono.just(userDTO)
+                .map(dto -> MapperUtil.MAPPER.map(dto, User.class))
+                .flatMap(userRepository::save);
     }
 
     @Override
-    public Mono<Void> update(User user) {
-        return findById(user.getId())
-                .map(userSaved -> {
-                    String userSavedPassword = userSaved.getPassword();
-                    boolean matches = passwordEncoder.matches(user.getPassword(), userSavedPassword);
-                    if (!matches) user.withPassword(passwordEncoder.encode(user.getPassword()));
-                    return user;
-                })
+    @Transactional
+    public Mono<Void> update(UserDTO userDTO, Long id) {
+        return findById(id)
+                .doOnNext(userSaved -> MapperUtil.MAPPER.map(userDTO, userSaved))
                 .flatMap(userRepository::save)
                 .then();
     }
 
     @Override
+    @Transactional
     public Mono<Void> delete(Long id) {
         return findById(id)
                 .flatMap(userRepository::delete)
