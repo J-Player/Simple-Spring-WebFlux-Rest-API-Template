@@ -7,7 +7,6 @@ plugins {
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 17
-targetCompatibility = 17
 
 repositories {
     mavenCentral()
@@ -21,8 +20,7 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-webflux-ui:1.6.15' //SPRINGDOC OPENAPI WEBFLUX
     compileOnly 'org.projectlombok:lombok:1.18.26' //LOMBOK
     annotationProcessor 'org.projectlombok:lombok:1.18.26' //LOMBOK
-    implementation 'org.mapstruct:mapstruct:1.5.3.Final' //MAPSTRUCT
-    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final' //MAPSTRUCT
+    implementation 'org.modelmapper:modelmapper:3.1.1' //MODELMAPPER
     testImplementation 'org.springframework.boot:spring-boot-starter-test' //SPRING TEST
     testImplementation 'org.springframework.security:spring-security-test' //SPRING SECURITY TEST
     testImplementation 'io.projectreactor:reactor-test:3.5.4' //REACTOR
