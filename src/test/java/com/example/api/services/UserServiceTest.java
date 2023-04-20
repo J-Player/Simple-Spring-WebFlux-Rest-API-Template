@@ -1,10 +1,13 @@
 package com.example.api.services;
 
 import com.example.api.domains.User;
+import com.example.api.domains.dtos.UserDTO;
 import com.example.api.repositories.UserRepository;
 import com.example.api.services.impl.UserService;
 import com.example.api.utils.UserCreator;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
@@ -32,43 +35,19 @@ class UserServiceTest {
     @Mock
     private PasswordEncoder passwordEncoder = createDelegatingPasswordEncoder();
 
-    private final User user = UserCreator.createUser();
-
-    /*
-    FIXME: Está ocorrendo um erro com o Blockhound, irei corrigi-lo eventualmente.
-    @BeforeAll
-    public static void blockHound() {
-        BlockHound.install();
-    }
-
-    @Test
-    void blockHoundWorks() {
-        try {
-            FutureTask<?> task = new FutureTask<>(() -> {
-                Thread.sleep(0); //NOSONAR
-                return "";
-            });
-            Schedulers.parallel().schedule(task);
-            task.get(10, TimeUnit.SECONDS);
-            Assertions.fail("should fail");
-        } catch (Exception e) {
-            Assertions.assertTrue(e.getCause() instanceof BlockingOperationError);
-        }
-    }
-    */
+    private final User user = UserCreator.user();
+    private final UserDTO userDTO = UserCreator.userDTO();
 
     @BeforeEach
     void setUp() {
-        BDDMockito.when(userRepository.findById(user.getId()))
+        BDDMockito.when(userRepository.findById(anyLong()))
                 .thenReturn(Mono.just(user));
         BDDMockito.when(userRepository.findByUsername(anyString()))
                 .thenReturn(Mono.just(user));
         BDDMockito.when(userRepository.findAll())
                 .thenReturn(Flux.just(user));
-        BDDMockito.when(userRepository.save(user))
+        BDDMockito.when(userRepository.save(any(User.class)))
                 .thenReturn(Mono.just(user));
-        BDDMockito.when(userRepository.save(UserCreator.createUser()))
-                .thenReturn(Mono.empty());
         BDDMockito.when(userRepository.delete(any(User.class)))
                 .thenReturn(Mono.empty());
     }
@@ -125,7 +104,7 @@ class UserServiceTest {
     @Test
     @DisplayName("save | Salva um User no banco de dados quando bem-sucedido")
     void save() {
-        StepVerifier.create(userService.save(user))
+        StepVerifier.create(userService.save(userDTO))
                 .expectSubscription()
                 .expectNext(user)
                 .expectComplete();
@@ -134,7 +113,9 @@ class UserServiceTest {
     @Test
     @DisplayName("update | Atualiza um User no banco de dados quando bem-sucedido")
     void update() {
-        StepVerifier.create(userService.update(UserCreator.createUser()))
+        BDDMockito.when(userRepository.findById(anyLong()))
+                .thenReturn(Mono.just(user));
+        StepVerifier.create(userService.update(userDTO, 1L))
                 .expectSubscription()
                 .expectComplete();
     }
@@ -144,7 +125,7 @@ class UserServiceTest {
     void update_UserNotFound() {
         BDDMockito.when(userRepository.findById(user.getId()))
                         .thenReturn(Mono.empty());
-        StepVerifier.create(userService.update(UserCreator.createUser()))
+        StepVerifier.create(userService.update(userDTO, 1L))
                 .expectSubscription()
                 .expectError(ResponseStatusException.class)
                 .verify();

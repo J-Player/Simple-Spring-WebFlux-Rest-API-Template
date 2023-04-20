@@ -38,8 +38,8 @@ class UserControllerIT {
     @MockBean
     private UserRepository userRepository;
 
-    private final User user = UserCreator.createUser();
-    private final UserDTO userDTO = UserCreator.createUserDTO();
+    private final User user = UserCreator.user();
+    private final UserDTO userDTO = UserCreator.userDTO();
 
     @BeforeEach
     void setUp() {

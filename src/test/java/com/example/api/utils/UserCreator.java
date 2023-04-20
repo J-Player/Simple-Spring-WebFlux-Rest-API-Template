@@ -2,28 +2,37 @@ package com.example.api.utils;
 
 import com.example.api.domains.User;
 import com.example.api.domains.dtos.UserDTO;
-import com.example.api.mappers.UserMapper;
-
-import java.util.Random;
 
 public class UserCreator {
 
-    private static final Random random = new Random();
-    private static final Long ID = random.nextLong();
+    private static final Long ID = 1L;
     private static final String USERNAME = "username";
     private static final String PASSWORD = "password";
     private static final String AUTHORITIES = "ROLE_ADMIN,ROLE_USER";
 
-    public static User createUser() {
-        return UserMapper.INSTANCE.toUser(createUserDTO()).withId(ID);
-    }
-
-    public static UserDTO createUserDTO() {
-        return UserDTO.builder()
+    public static User user() {
+        return User.builder()
+                .id(ID)
                 .username(USERNAME)
                 .password(PASSWORD)
                 .authorities(AUTHORITIES)
                 .build();
+    }
+
+    public static UserDTO userDTO() {
+        return MapperUtil.MAPPER.map(user(), UserDTO.class);
+    }
+
+    public static UserDTO userToSave() {
+        return userDTO().withUsername(USERNAME.concat("_Save"));
+    }
+
+    public static User userToUpdate() {
+        return user().withId(2L).withUsername(USERNAME.concat("_Update"));
+    }
+
+    public static User userToDelete() {
+        return user().withId(3L).withUsername(USERNAME.concat("_Delete"));
     }
 
 }

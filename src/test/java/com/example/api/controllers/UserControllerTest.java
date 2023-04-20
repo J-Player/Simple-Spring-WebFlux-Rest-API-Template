@@ -17,8 +17,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 
 @ExtendWith(SpringExtension.class)
 @DisplayName("User Controller Test Class")
@@ -30,18 +29,20 @@ class UserControllerTest {
     @Mock
     private UserService userService;
 
-    private final User user = UserCreator.createUser();
-    private final UserDTO userDTO = UserCreator.createUserDTO();
+    private final User user = UserCreator.user();
+    private final UserDTO userDTO = UserCreator.userDTO();
 
     @BeforeEach
     void setUp() {
         BDDMockito.when(userService.findById(anyLong()))
                 .thenReturn(Mono.just(user));
+        BDDMockito.when(userService.findByName(anyString()))
+                .thenReturn(Mono.just(user));
         BDDMockito.when(userService.findAll())
                 .thenReturn(Flux.just(user));
-        BDDMockito.when(userService.save(any(User.class)))
+        BDDMockito.when(userService.save(any(UserDTO.class)))
                 .thenReturn(Mono.just(user));
-        BDDMockito.when(userService.save(any(User.class)))
+        BDDMockito.when(userService.update(any(UserDTO.class), anyLong()))
                 .thenReturn(Mono.empty());
         BDDMockito.when(userService.delete(anyLong()))
                 .thenReturn(Mono.empty());
