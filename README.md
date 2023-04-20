@@ -1,5 +1,5 @@
 # Simple Spring WebFlux Rest Template
-Uma simples **API REST Template** usando **Spring WebFlux**.
+Uma simples **API REST Template** usando **Spring Boot WebFlux**.
 
 # Como configurar
 - Escolha um [Driver R2DBC](https://r2dbc.io/drivers/) e adicione-o às dependências do projeto.
