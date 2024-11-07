@@ -1,0 +1,28 @@
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
+  docker:
+    compose:
+      file: "docker-compose.yml"
+      profiles:
+        active:
+        - dev
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    shutdown:
+      enabled: true
+api:
+  config:
+    security:
+      token:
+        issuer: issuer
+        audience: audience
+        secret: secret
+        access-token-expiration: 30m
+        refresh-token-expiration: 1d
